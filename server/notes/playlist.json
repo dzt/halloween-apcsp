@@ -1,0 +1,41 @@
+{
+    "collaborative": false,
+    "external_urls": {
+        "spotify": "https://open.spotify.com/playlist/1b8CAOGjODOvOTjMKvACMz"
+    },
+    "href": "https://api.spotify.com/v1/playlists/1b8CAOGjODOvOTjMKvACMz",
+    "id": "1b8CAOGjODOvOTjMKvACMz",
+    "images": [{
+        "height": 640,
+        "url": "https://mosaic.scdn.co/640/94619025293f2dced057e880f0ff4abbea3d8a90abd96549fa53000a633d64cbab5a69a623b6bdfaca6f24d08b486783cd6e04900ccfb7bf7395bf29e39bcda8f658ad15daeccf03592738a12a272b6d",
+        "width": 640
+    }, {
+        "height": 300,
+        "url": "https://mosaic.scdn.co/300/94619025293f2dced057e880f0ff4abbea3d8a90abd96549fa53000a633d64cbab5a69a623b6bdfaca6f24d08b486783cd6e04900ccfb7bf7395bf29e39bcda8f658ad15daeccf03592738a12a272b6d",
+        "width": 300
+    }, {
+        "height": 60,
+        "url": "https://mosaic.scdn.co/60/94619025293f2dced057e880f0ff4abbea3d8a90abd96549fa53000a633d64cbab5a69a623b6bdfaca6f24d08b486783cd6e04900ccfb7bf7395bf29e39bcda8f658ad15daeccf03592738a12a272b6d",
+        "width": 60
+    }],
+    "name": "Halloween (Pop)",
+    "owner": {
+        "display_name": "Anthony Prince",
+        "external_urls": {
+            "spotify": "https://open.spotify.com/user/anthonyprince18"
+        },
+        "href": "https://api.spotify.com/v1/users/anthonyprince18",
+        "id": "anthonyprince18",
+        "type": "user",
+        "uri": "spotify:user:anthonyprince18"
+    },
+    "primary_color": null,
+    "public": null,
+    "snapshot_id": "MjE3LDE5NGRjMjljNmUxYTVhOTQwNTEzOGFkZTMwMGI1Y2ZhMTZhMGU0NDI=",
+    "tracks": {
+        "href": "https://api.spotify.com/v1/playlists/1b8CAOGjODOvOTjMKvACMz/tracks",
+        "total": 72
+    },
+    "type": "playlist",
+    "uri": "spotify:user:anthonyprince18:playlist:1b8CAOGjODOvOTjMKvACMz"
+}
