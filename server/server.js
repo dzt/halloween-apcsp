@@ -1,13 +1,18 @@
 const SpotifyWebApi = require('spotify-web-api-node');
 const spotifyApi = new SpotifyWebApi(require('./config'));
 const duplicates = require('array-duplicates');
+const helmet = require('helmet');
 const _ = require('underscore');
+const morgan = require('morgan');
 
 /* Server Trash */
 const express = require('express');
 const app = express();
 const bodyParser = require('body-parser');
 const port = process.env.PORT || 3000;
+
+app.use(helmet());
+app.use(morgan('combined'));
 
 app.get('/', function (req, res) {
     return res.status(200).send({
@@ -34,8 +39,8 @@ let findPlaylists = function (query, callback) {
     let getPlaylistArr = [];
 
     spotifyApi.searchPlaylists(query, {
-        limit: 50,
-        offset: 50
+        limit: 15,
+        offset: 15
     }, (err, data) => {
         if (err) {
             console.log(err)
@@ -119,8 +124,6 @@ let findPlaylists = function (query, callback) {
                         })
                     }
 
-                    console.log(parsedList);
-
                     return callback(null, parsedList);
                 })
                 .then(function (arrayOfValuesOrErrors) {
@@ -135,18 +138,24 @@ let findPlaylists = function (query, callback) {
 }
 
 app.get('/fetch', function (req, res) {
+    console.log("Ping");
+    let query = "halloween";
+    if (req.query.s) {
+        query = req.query.s;
+    }
     auth((err, token) => {
         console.log('token: ' + token);
         if (!err) {
-            findPlaylists('halloween', (err, data) => {
+            findPlaylists(query, (err, data) => {
                 if (!err) {
                     return res.status(200).send({
                         error: false,
                         data: data
                     });
                 } else {
-                    return res.status(400).send({
-                        error: false,
+                    console.log(err)
+                    return res.status(200).send({
+                        error: true,
                         message: err
                     });
                 }
