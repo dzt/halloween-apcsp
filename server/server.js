@@ -46,7 +46,6 @@ let findPlaylists = function (query, callback) {
             console.log(err)
             return callback(err, null);
         } else {
-
             /* Create Playlists Array (Light Version) */
             for (let i = 0; i < data.body.playlists.items.length; i++) {
                 playlistsArr.push({
@@ -55,8 +54,11 @@ let findPlaylists = function (query, callback) {
                     image: data.body.playlists.items[i].images[0].url,
                     author: data.body.playlists.items[i].owner.display_name,
                     trackCount: data.body.playlists.items[i].tracks.total,
+                    popularity: 0,
+                    followers: 0,
                     tracks: []
                 });
+
                 getPlaylistArr.push(spotifyApi.getPlaylist(playlistsArr[i].id));
             }
 
@@ -64,14 +66,18 @@ let findPlaylists = function (query, callback) {
             Promise.all(getPlaylistArr).then(function (playlists) {
                     for (let x = 0; x < playlists.length; x++) {
                         let songs = playlists[x].body.tracks.items;
+                        playlistsArr[x].followers = playlists[x].body.followers.total;
+                        playlistsArr[x].popularity = playlists[x].body.popularity;
                         for (let i = 0; i < songs.length; i++) {
                             if (songs[i].track && songs[i].track.id && songs[i].track.album.images[0]) {
                                 tracks.push({
                                     id: songs[i].track.id,
                                     name: songs[i].track.name,
                                     artwork: songs[i].track.album.images[0].url,
-                                    artist: songs[i].track.artists[0].name
+                                    artist: songs[i].track.artists[0].name,
+                                    popularity: songs[i].track.popularity
                                 })
+                                console.log(songs[i]);
                                 trackIDs.push(songs[i].track.id);
                                 playlistsArr[x].tracks.push(songs[i].track.id);
                             }
@@ -109,8 +115,8 @@ let findPlaylists = function (query, callback) {
                         let p = []; /* Find Playlists that have this song */
                         for (let x = 0; x < playlistsArr.length; x++) {
                             if (typeof playlistsArr[x] != 'undefined' && playlistsArr[x].tracks.includes(parsedSong.id)) {
-                                let trackDetails = playlistsArr[x];
-                                p.push(trackDetails);
+                                let playlistDetails = playlistsArr[x];
+                                p.push(playlistsArr[x].id);
                             }
                         }
 
@@ -119,12 +125,18 @@ let findPlaylists = function (query, callback) {
                             name: parsedSong.name,
                             artwork: parsedSong.artwork,
                             artist: parsedSong.artist,
+                            popularity: parsedSong.popularity,
                             dups: p.length,
                             playlists: p
                         })
                     }
 
-                    return callback(null, parsedList);
+                    let res = {
+                        parsedList: parsedList,
+                        playlistsArr: playlistsArr
+                    }
+
+                    return callback(null, res);
                 })
                 .then(function (arrayOfValuesOrErrors) {
                     // TODO
@@ -150,7 +162,8 @@ app.get('/fetch', function (req, res) {
                 if (!err) {
                     return res.status(200).send({
                         error: false,
-                        data: data
+                        tracks: data.parsedList,
+                        playlists: data.playlistsArr
                     });
                 } else {
                     console.log(err)
